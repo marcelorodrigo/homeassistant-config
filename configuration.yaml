@@ -27,3 +27,13 @@ http:
 
 shell_command:
   git_pull: git -C /config pull --ff-only
+
+input_number:
+  entryway_light_linger_minutes:
+    name: Entryway Light – Linger after no motion (minutes)
+    min: 0
+    max: 30
+    step: 0.5
+    initial: 1
+    unit_of_measurement: min
+    icon: mdi:timer-outline
