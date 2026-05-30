@@ -18,7 +18,6 @@ views:
 
           - type: picture-entity
             entity: camera.living_room_camera_hd_stream
-            camera_image: camera.living_room_camera_hd_stream
             camera_view: live
             show_name: false
             show_state: false
@@ -102,7 +101,7 @@ views:
                 entity_id: button.living_room_camera_move_up
             grid_options:
               columns: 3
-              row: 2
+              rows: 2
 
           # Row: [Left] [Calibrate] [Right]
           - type: button
@@ -173,7 +172,6 @@ views:
 
           - type: picture-entity
             entity: camera.outdoor_camera_hd_stream
-            camera_image: camera.outdoor_camera_hd_stream
             camera_view: live
             show_name: false
             show_state: false
