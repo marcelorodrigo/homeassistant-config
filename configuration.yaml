@@ -6,6 +6,15 @@ default_config:
 frontend:
   themes: !include_dir_merge_named themes
 
+lovelace:
+  dashboards:
+    dashboard-camera:
+      mode: yaml
+      filename: dashboards/camera.yaml
+      title: Cameras
+      icon: mdi:cctv
+      show_in_sidebar: true
+
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
