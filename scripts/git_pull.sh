@@ -1,6 +1,7 @@
 #!/bin/sh
 set -e
 
+
 LOG=/config/scripts/git_pull.log
 exec > >(tee -a "$LOG") 2>&1
 echo "=== $(date) ==="
