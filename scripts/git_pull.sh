@@ -6,7 +6,7 @@ LOG=/config/scripts/git_pull.log
 exec > >(tee -a "$LOG") 2>&1
 echo "=== $(date) ==="
 
-# Ensure SSH key has correct permissions
+# Ensure SSH key has correct permissions 
 chmod 600 /config/.ssh/id_ed25519
 
 export GIT_SSH_COMMAND="ssh -i /config/.ssh/id_ed25519 -o StrictHostKeyChecking=no"
