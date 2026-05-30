@@ -6,6 +6,7 @@ echo "=== $(date) ==="
 
 set -e
 
+echo "Starting git pull script..."
 # Ensure SSH key has correct permissions
 chmod 600 /data/.ssh/id_ed25519
 
