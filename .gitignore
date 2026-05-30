@@ -16,3 +16,4 @@ __pycache__/
 *.lock
 .shopping_list.json
 www/
+.ssh/

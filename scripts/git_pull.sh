@@ -7,9 +7,9 @@ exec > >(tee -a "$LOG") 2>&1
 echo "=== $(date) ==="
 
 # Ensure SSH key has correct permissions
-chmod 600 /data/.ssh/id_ed25519
+chmod 600 /config/.ssh/id_ed25519
 
-export GIT_SSH_COMMAND="ssh -i /data/.ssh/id_ed25519 -o StrictHostKeyChecking=no"
+export GIT_SSH_COMMAND="ssh -i /config/.ssh/id_ed25519 -o StrictHostKeyChecking=no"
 
 echo "Fetching origin..."
 git -C /config fetch origin
