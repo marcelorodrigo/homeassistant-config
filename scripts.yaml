@@ -1,0 +1,27 @@
+new_script:
+  alias: Send notification to all users at home
+  fields:
+    message:
+      description: Message to send
+      example: Let's celebrate with a BBQ
+    title:
+      description: Notification title
+      example: BBQ Time
+    data:
+      description: Extra notification data (optional)
+      example: '{"actions": [{"action": "acknowledge", "title": "OK"}]}'
+      default: {}
+  sequence:
+  - variables:
+      persons_at_home: "{% set persons = [] %} {% for entity_id in states.person |
+        map(attribute='entity_id') %}\n  {% if is_state(entity_id, 'home') %}\n    {%
+        set persons = persons + [entity_id | replace('person.', '')] %}\n  {% endif
+        %}\n{% endfor %} {{ persons }}"
+  - repeat:
+      for_each: '{{ persons_at_home }}'
+      sequence:
+      - data:
+          message: '{{ message }}'
+          title: '{{ title }}'
+          data: '{{ data | default({}) }}'
+        action: notify.mobile_app_{{ repeat.item | replace('.', '_') }}

@@ -1,0 +1,441 @@
+- id: '1738874992886'
+  alias: Entryway Light with Sensor
+  description: Turn on the entryway light when presence is detected by movement sensor
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.entryway_sensor_occupancy
+    from:
+    to: 'on'
+  conditions: []
+  actions:
+  - alias: Turn on the light
+    action: light.turn_on
+    data:
+      brightness_pct: 65
+      color_temp_kelvin: 2800
+    target:
+      device_id: 6bac16f7fdf74d36935754a857235f0c
+  - alias: Wait until there is no motion from device
+    wait_for_trigger:
+    - trigger: state
+      entity_id:
+      - binary_sensor.entryway_sensor_occupancy
+      to: 'off'
+    continue_on_timeout: true
+  - alias: Wait the number of seconds that has been set
+    delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - alias: Turn off the light
+    action: light.turn_off
+    data:
+      transition: 4
+    target:
+      device_id: 6bac16f7fdf74d36935754a857235f0c
+  mode: restart
+  max_exceeded: silent
+- id: '1739046619134'
+  alias: Klikos collection notification
+  description: Sends a notification at 16:00 if there's klikos to collect
+  triggers:
+  - at: '16:00:00'
+    trigger: time
+  conditions:
+  - condition: template
+    value_template: '{{ states(''sensor.afvalinfo_afval_trash_type_today'') != ''no''
+      }}'
+  actions:
+  - data:
+      message: "\U0001F519\U0001F5D1️ Collect Kliko: {{states('sensor.afvalinfo_afval_trash_type_tomorrow')
+        }}\n"
+    action: notify.send_message
+  mode: single
+- id: '1739217106039'
+  alias: IKEA Living Room Lights Remote Controller
+  description: ''
+  use_blueprint:
+    path: EPMatt/ikea_e2001_e2002.yaml
+    input:
+      integration: Zigbee2MQTT
+      controller_entity: sensor.living_room_lights_remote_action
+      helper_last_controller_event: input_text.living_room_remote_last_controller_event
+      action_button_up_short: []
+      action_button_down_short: []
+      action_button_up_long: []
+      button_up_double_press: false
+- id: '1739217550400'
+  alias: Hooks for living room lights
+  description: ''
+  use_blueprint:
+    path: EPMatt/light.yaml
+    input:
+      controller_entity: sensor.living_room_lights_remote_action
+      controller_model: IKEA E2001/E2002 STYRBAR Remote control
+      light: light.living_room_lights
+      light_color_mode: Color Temperature
+      brightness_steps_short: 50
+      brightness_steps_long: 50
+      force_brightness: true
+      on_brightness: 186
+      controller_device: 04b15d78474e15c1d9e438808118350e
+- id: '1739270007175'
+  alias: Check for all zigbee devices if offline for 24h, everyday at 10am
+  description: ''
+  use_blueprint:
+    path: Mr-Groch/offline-notification-for-sensors-with-last_seen.yaml
+    input:
+      actions:
+      - action: notify.mobile_app_android_marcelo
+        metadata: {}
+        data:
+          message: Zigbee device offline for 24h {{sensors}}
+- id: '1739270575514'
+  alias: Check for entryway light link quality
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.entryway_lamp_linkquality
+    to: unavailable
+  conditions: []
+  actions:
+  - action: notify.mobile_app_android_marcelo
+    metadata: {}
+    data:
+      message: Entryway lamp looks like off.
+  mode: single
+- id: '1740681576033'
+  alias: Trash Collection Reminder
+  description: Sends a notification to all users at 17:00h if klikos needs to be collected
+    today
+  triggers:
+  - at: '17:00:00'
+    trigger: time
+  conditions:
+  - condition: template
+    value_template: '{{ states(''sensor.afvalinfo_afval_trash_type_today'') != ''no''
+      }}'
+  actions:
+  - data:
+      title: Trash Collection Reminder
+      message: 'Bring klikos back: {{ states(''sensor.afvalinfo_afval_trash_type_today'')
+        }}'
+    action: notify.notify
+  mode: single
+- id: '1740682338082'
+  alias: Trash Reminder
+  description: Sends a notification to all users at 19:00h if trash needs to be sent
+    to collectiontoday
+  triggers:
+  - at: '19:00:00'
+    trigger: time
+  conditions:
+  - condition: template
+    value_template: '{{ states(''sensor.afvalinfo_afval_trash_type_tomorrow'') !=
+      ''no'' }}'
+  actions:
+  - data:
+      title: Trash Day
+      message: 'Will be collected tomorrow: {{ states(''sensor.afvalinfo_afval_trash_type_tomorrow'')
+        }}'
+    action: notify.notify
+  mode: single
+- id: '1740683397495'
+  triggers:
+  - trigger: tag
+    tag_id: washing-machine-nfc
+  actions:
+  - target:
+      entity_id: input_text.wash_machine_device_to_notify
+    data:
+      value: '{{ trigger.event.context.user_id }}'
+    action: input_text.set_value
+  - data:
+      duration: 02:30:00
+    action: timer.start
+    target:
+      entity_id: timer.washing_machine_timer
+  - action: notify.notify
+    metadata: {}
+    data:
+      message: The washing cycle has started
+      title: Washing Machine
+- id: '1740686990162'
+  alias: Washing Machine Timer Over Notification
+  description: Send notification when washing machine timer is complete
+  triggers:
+  - event_type: timer.finished
+    event_data:
+      entity_id: timer.washing_machine_timer
+    trigger: event
+  conditions: []
+  actions:
+  - action: notify.notify
+    metadata: {}
+    data:
+      title: Washing Machine
+      message: Time to put the clothes to dry, washing cycle is over.
+  - device_id: bd255e4a83285f49b71f88d9fbd1c8a4
+    domain: light
+    entity_id: 92c9499d28ae89bbfa06f7a0d06510bc
+    type: flash
+  - device_id: 29f93151193edf14ad31443f94f78404
+    domain: light
+    entity_id: 8a55b41d815020f2876a2f12df8e84d8
+    type: flash
+  mode: single
+- id: '1740751679424'
+  alias: NFC Dryer Machine was scanned
+  description: NFC Dryer Machine was scanned
+  triggers:
+  - trigger: tag
+    tag_id: dryer-machine-nfc
+  conditions: []
+  actions:
+  - data:
+      duration: 01:57:00
+    action: timer.start
+    target:
+      entity_id: timer.dryer_machine_timer
+  - action: notify.notify
+    metadata: {}
+    data:
+      message: The dryer cycle has started
+      title: Dryer Machine
+  mode: single
+- id: '1740751859592'
+  alias: Dryer Machine cycle is over
+  description: Send notification when washing machine timer is complete
+  triggers:
+  - event_type: timer.finished
+    event_data:
+      entity_id: timer.dryer_machine_timer
+    trigger: event
+  conditions: []
+  actions:
+  - action: notify.notify
+    metadata: {}
+    data:
+      title: Dryer Machine
+      message: Time to fold the clothes, they are dry.
+  mode: single
+- id: '1741881323198'
+  alias: Turn ON Adguard after 15 minutes
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - switch.adguard_home_protection
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 0d227bcb6db3bde4d848cdb1c4e2ca24
+    entity_id: 76acadcf03fc15e2c05663c6fc2d52a7
+    domain: switch
+  - action: notify.send_message
+    metadata: {}
+    data:
+      message: Adguard Home is ON
+  mode: single
+- id: '1749571581335'
+  alias: Gate Remote Automation
+  description: ''
+  use_blueprint:
+    path: damru/ikea_E1743-E2201-E2213_ZHA-Z2M_control-anything.yaml
+    input:
+      remote_devices:
+      - 49a5d6fe807e34e8f4033972109492b6
+      on_press_action:
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          device_id: 5ced47830e598819cfd82982304e7d21
+      - action: notify.send_message
+        metadata: {}
+        data:
+          message: Gate Remote button was pressed
+      off_press_action:
+      - action: media_player.play_media
+        target:
+          entity_id: media_player.all_speakers
+        data:
+          media_content_id: library://playlist/29
+          media_content_type: music
+        metadata:
+          title: This Is Michael Jackson
+          thumbnail: https://thisis-images.spotifycdn.com/37i9dQZF1DZ06evO1SVXaM-default.jpg
+          media_class: playlist
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: music_assistant
+            media_content_id: playlists
+      off_hold_action:
+      - action: media_player.play_media
+        target:
+          entity_id: media_player.all_speakers
+        data:
+          media_content_id: library://playlist/17
+          media_content_type: music
+        metadata:
+          title: Suzan & Freek Mix
+          thumbnail: https://seed-mix-image.spotifycdn.com/v6/img/artist/77IW5ZK1smDQYYKDCQugXh/fr/default
+          media_class: playlist
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: music_assistant
+            media_content_id: playlists
+- id: '1765291805799'
+  alias: Julia Remote Automation
+  description: ''
+  use_blueprint:
+    path: damru/ikea_E1743-E2201-E2213_ZHA-Z2M_control-anything.yaml
+    input:
+      remote_devices:
+      - eb5d7ef536a4c01a2d4c447912bc1a5b
+      on_press_action:
+      - action: light.toggle
+        metadata: {}
+        target:
+          entity_id: light.julia_lamp
+        data:
+          brightness_pct: 65
+          color_temp_kelvin: 2800
+      off_press_action:
+      - action: light.toggle
+        metadata: {}
+        target:
+          entity_id: light.julia_lamp
+        data:
+          brightness_pct: 65
+          color_temp_kelvin: 3400
+      on_hold_action:
+      - device_id: 182c5f603998dc6281bcbb1e671dd9d4
+        domain: light
+        entity_id: 53ec5aecf58b9d5fbffae5dd1e7a6f26
+        type: brightness_increase
+      off_hold_action:
+      - device_id: 182c5f603998dc6281bcbb1e671dd9d4
+        domain: light
+        entity_id: 53ec5aecf58b9d5fbffae5dd1e7a6f26
+        type: brightness_decrease
+- id: '1765299190135'
+  alias: Office Remote Automation
+  description: ''
+  use_blueprint:
+    path: damru/ikea_E1743-E2201-E2213_ZHA-Z2M_control-anything.yaml
+    input:
+      remote_devices:
+      - 55a9e6fdaec61ea5f89d609f62f62aec
+      on_press_action:
+      - action: light.toggle
+        metadata: {}
+        target:
+          entity_id: light.office_lamp
+        data:
+          color_temp_kelvin: 2800
+          brightness_pct: 65
+      off_press_action:
+      - action: light.toggle
+        metadata: {}
+        target:
+          entity_id: light.office_lamp
+        data:
+          color_temp_kelvin: 3400
+          brightness_pct: 65
+      on_hold_action:
+      - device_id: 31eeec7e23154de2bbd4d3886996f4c6
+        domain: light
+        entity_id: 71eac8c77de5bee4708c5a2842a89756
+        type: brightness_increase
+      off_hold_action:
+      - device_id: 31eeec7e23154de2bbd4d3886996f4c6
+        domain: light
+        entity_id: 71eac8c77de5bee4708c5a2842a89756
+        type: brightness_decrease
+      on_double_press_action:
+      - action: music_assistant.play_media
+        metadata: {}
+        target:
+          entity_id: media_player.nestmini6232_2
+        data:
+          media_type: album
+          artist: Zwifting Hard
+- id: '1765388354071'
+  alias: Guilherme Remote Automation
+  description: ''
+  use_blueprint:
+    path: damru/ikea_E1743-E2201-E2213_ZHA-Z2M_control-anything.yaml
+    input:
+      remote_devices:
+      - d720796b6a663ddaafd1ec547a991c6c
+      on_press_action:
+      - action: light.toggle
+        metadata: {}
+        target:
+          entity_id: light.guilherme_lamp
+        data:
+          brightness_pct: 65
+          color_temp_kelvin: 2800
+      off_press_action:
+      - action: light.toggle
+        metadata: {}
+        target:
+          entity_id: light.guilherme_lamp
+        data:
+          brightness_pct: 65
+          color_temp_kelvin: 3400
+      on_hold_action:
+      - device_id: b176a6eb546d3492991b1bcd8387e937
+        domain: light
+        entity_id: 79ce191f4f2d0defb5e48efb45530ccc
+        type: brightness_increase
+      off_hold_action:
+      - device_id: b176a6eb546d3492991b1bcd8387e937
+        domain: light
+        entity_id: 79ce191f4f2d0defb5e48efb45530ccc
+        type: brightness_decrease
+- id: '1765394256832'
+  alias: Master Remote Automation
+  description: ''
+  use_blueprint:
+    path: damru/ikea_E1743-E2201-E2213_ZHA-Z2M_control-anything.yaml
+    input:
+      remote_devices:
+      - e308073ebe70e63f5fe94a9295ab61e1
+      on_press_action:
+      - action: light.toggle
+        metadata: {}
+        target:
+          entity_id: light.master_lamp
+        data:
+          brightness_pct: 65
+          color_temp_kelvin: 2800
+      off_press_action:
+      - action: light.toggle
+        metadata: {}
+        target:
+          entity_id: light.master_lamp
+        data:
+          brightness_pct: 65
+          color_temp_kelvin: 3400
+      on_hold_action:
+      - device_id: fc7615bd5f4862f484f4bbb3a8547fcd
+        domain: light
+        entity_id: bc138df47a10abbb4b514e80ab091f4e
+        type: brightness_increase
+      off_hold_action:
+      - device_id: fc7615bd5f4862f484f4bbb3a8547fcd
+        domain: light
+        entity_id: bc138df47a10abbb4b514e80ab091f4e
+        type: brightness_decrease
