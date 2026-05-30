@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
-echo "Starting git update process..."
+
+LOG=/config/scripts/git_pull.log
+exec > >(tee -a "$LOG") 2>&1
+echo "=== $(date) ==="
 
 # Ensure SSH key has correct permissions
 chmod 600 /data/.ssh/id_ed25519
