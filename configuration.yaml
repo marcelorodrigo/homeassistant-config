@@ -26,7 +26,7 @@ http:
     - 192.168.68.0/24
 
 shell_command:
-  git_pull: git -C /config pull --ff-only
+  git_pull: GIT_SSH_COMMAND="ssh -i /root/.ssh/id_ed25519 -o StrictHostKeyChecking=no" git -C /config pull --ff-only
 
 input_number:
   entryway_light_linger_minutes:
