@@ -31,4 +31,4 @@ if [ "$LOCAL" != "$BASE" ]; then
 fi
 
 git -C /config pull --ff-only
-echo "Done."
+echo "Update done."
