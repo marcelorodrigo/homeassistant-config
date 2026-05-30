@@ -1,3 +1,19 @@
+- id: github-deploy-webhook
+  alias: Deploy from GitHub
+  description: Pull the latest configuration from GitHub when GitHub sends a push webhook.
+  triggers:
+  - trigger: webhook
+    webhook_id: !secret github_deploy_webhook_id
+    allowed_methods:
+    - POST
+    local_only: false
+  conditions: []
+  actions:
+  - action: shell_command.git_pull
+  - delay:
+      seconds: 5
+  - action: homeassistant.reload_all
+  mode: single
 - id: '1738874992886'
   alias: Entryway Light with Sensor
   description: Turn on the entryway light when presence is detected by movement sensor
