@@ -162,28 +162,43 @@
     action: notify.notify
   mode: single
 - id: '1740683397495'
+  alias: NFC Washing Machine was scanned
+  description: Starts the washing machine timer and notifies the person who scanned the NFC tag.
   triggers:
   - trigger: tag
     tag_id: washing-machine-nfc
+  conditions: []
   actions:
-  - target:
+  - alias: Save the user who triggered this cycle
+    target:
       entity_id: input_text.wash_machine_device_to_notify
     data:
       value: '{{ trigger.event.context.user_id }}'
     action: input_text.set_value
-  - data:
-      duration: 02:30:00
+  - alias: Start timer using configurable duration
+    data:
+      duration: >-
+        {% set mins = states('input_number.washing_machine_duration_minutes') | int %}
+        {{ '%02d:%02d:00' % (mins // 60, mins % 60) }}
     action: timer.start
     target:
       entity_id: timer.washing_machine_timer
-  - action: notify.notify
-    metadata: {}
+  - alias: Notify with person name who started the cycle
+    action: notify.notify
     data:
-      message: The washing cycle has started
       title: Washing Machine
+      message: >-
+        {% set uid = states('input_text.wash_machine_device_to_notify') %}
+        {% set person = states.person | selectattr('attributes.user_id', 'eq', uid) | list %}
+        {% if person %}{{ person[0].name }}{% else %}Someone{% endif %}
+        started a washing cycle.
+        It will be done in {{ states('input_number.washing_machine_duration_minutes') | int }} minutes.
+  mode: single
 - id: '1740686990162'
   alias: Washing Machine Timer Over Notification
-  description: Send notification when washing machine timer is complete
+  description: >-
+    Send notification to people at home when the washing cycle is complete.
+    Flashes the sofa and coffee lamps, then restores their previous state.
   triggers:
   - event_type: timer.finished
     event_data:
@@ -191,42 +206,88 @@
     trigger: event
   conditions: []
   actions:
-  - action: notify.notify
-    metadata: {}
+  - alias: Snapshot current state of living room lights before flashing
+    action: scene.create
     data:
-      title: Washing Machine
-      message: Time to put the clothes to dry, washing cycle is over.
-  - device_id: bd255e4a83285f49b71f88d9fbd1c8a4
-    domain: light
-    entity_id: 92c9499d28ae89bbfa06f7a0d06510bc
-    type: flash
-  - device_id: 29f93151193edf14ad31443f94f78404
-    domain: light
-    entity_id: 8a55b41d815020f2876a2f12df8e84d8
-    type: flash
+      scene_id: washing_machine_lights_snapshot
+      snapshot_entities:
+        - light.sofa_lamp
+        - light.coffee_lamp
+  - alias: Flash sofa lamp
+    action: light.turn_on
+    target:
+      entity_id: light.sofa_lamp
+    data:
+      flash: short
+  - alias: Flash coffee lamp
+    action: light.turn_on
+    target:
+      entity_id: light.coffee_lamp
+    data:
+      flash: short
+  - alias: Wait for flash to complete before restoring
+    delay:
+      seconds: 5
+  - alias: Restore lights to their pre-flash state
+    action: scene.turn_on
+    target:
+      entity_id: scene.washing_machine_lights_snapshot
+  - alias: Notify only people who are home
+    repeat:
+      for_each:
+        - person: marcelo
+        - person: janaina
+        - person: guilherme
+        - person: julia
+      sequence:
+        - choose:
+          - conditions:
+            - condition: template
+              value_template: "{{ is_state('person.' ~ repeat.item.person, 'home') }}"
+            sequence:
+              - action: "notify.mobile_app_android_{{ repeat.item.person }}"
+                data:
+                  title: Washing Machine
+                  message: Time to put the clothes to dry, washing cycle is over.
   mode: single
 - id: '1740751679424'
   alias: NFC Dryer Machine was scanned
-  description: NFC Dryer Machine was scanned
+  description: Starts the dryer timer and notifies the person who scanned the NFC tag.
   triggers:
   - trigger: tag
     tag_id: dryer-machine-nfc
   conditions: []
   actions:
-  - data:
-      duration: 01:57:00
+  - alias: Save the user who triggered this cycle
+    target:
+      entity_id: input_text.dryer_machine_device_to_notify
+    data:
+      value: '{{ trigger.event.context.user_id }}'
+    action: input_text.set_value
+  - alias: Start timer using configurable duration
+    data:
+      duration: >-
+        {% set mins = states('input_number.dryer_machine_duration_minutes') | int %}
+        {{ '%02d:%02d:00' % (mins // 60, mins % 60) }}
     action: timer.start
     target:
       entity_id: timer.dryer_machine_timer
-  - action: notify.notify
-    metadata: {}
+  - alias: Notify with person name who started the cycle
+    action: notify.notify
     data:
-      message: The dryer cycle has started
       title: Dryer Machine
+      message: >-
+        {% set uid = states('input_text.dryer_machine_device_to_notify') %}
+        {% set person = states.person | selectattr('attributes.user_id', 'eq', uid) | list %}
+        {% if person %}{{ person[0].name }}{% else %}Someone{% endif %}
+        started a dryer cycle.
+        It will be done in {{ states('input_number.dryer_machine_duration_minutes') | int }} minutes.
   mode: single
 - id: '1740751859592'
   alias: Dryer Machine cycle is over
-  description: Send notification when washing machine timer is complete
+  description: >-
+    Send notification to people at home when the dryer cycle is complete.
+    Flashes the sofa and coffee lamps, then restores their previous state.
   triggers:
   - event_type: timer.finished
     event_data:
@@ -234,11 +295,49 @@
     trigger: event
   conditions: []
   actions:
-  - action: notify.notify
-    metadata: {}
+  - alias: Snapshot current state of living room lights before flashing
+    action: scene.create
     data:
-      title: Dryer Machine
-      message: Time to fold the clothes, they are dry.
+      scene_id: dryer_machine_lights_snapshot
+      snapshot_entities:
+        - light.sofa_lamp
+        - light.coffee_lamp
+  - alias: Flash sofa lamp
+    action: light.turn_on
+    target:
+      entity_id: light.sofa_lamp
+    data:
+      flash: short
+  - alias: Flash coffee lamp
+    action: light.turn_on
+    target:
+      entity_id: light.coffee_lamp
+    data:
+      flash: short
+  - alias: Wait for flash to complete before restoring
+    delay:
+      seconds: 5
+  - alias: Restore lights to their pre-flash state
+    action: scene.turn_on
+    target:
+      entity_id: scene.dryer_machine_lights_snapshot
+  - alias: Notify only people who are home
+    repeat:
+      for_each:
+        - person: marcelo
+        - person: janaina
+        - person: guilherme
+        - person: julia
+      sequence:
+        - choose:
+          - conditions:
+            - condition: template
+              value_template: "{{ is_state('person.' ~ repeat.item.person, 'home') }}"
+            sequence:
+              - action: "notify.mobile_app_android_{{ repeat.item.person }}"
+                data:
+                  title: Dryer Machine
+                  message: Time to fold the clothes, they are dry.
   mode: single
 - id: '1741881323198'
   alias: Turn ON Adguard after 15 minutes
