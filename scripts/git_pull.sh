@@ -1,4 +1,9 @@
 #!/bin/sh
+
+LOG=/config/scripts/git_pull.log
+exec >> "$LOG" 2>&1
+echo "=== $(date) ==="
+
 set -e
 
 # Ensure SSH key has correct permissions
@@ -6,13 +11,16 @@ chmod 600 /root/.ssh/id_ed25519
 
 export GIT_SSH_COMMAND="ssh -i /root/.ssh/id_ed25519 -o StrictHostKeyChecking=no"
 
-# Reset any local changes that would block fast-forward
+echo "Fetching origin..."
 git -C /config fetch origin
 
-# Abort if local branch has diverged (not just behind)
 LOCAL=$(git -C /config rev-parse HEAD)
-REMOTE=$(git -C /config rev-parse FETCH_HEAD)
-BASE=$(git -C /config merge-base HEAD FETCH_HEAD)
+REMOTE=$(git -C /config rev-parse origin/master)
+BASE=$(git -C /config merge-base HEAD origin/master)
+
+echo "LOCAL=$LOCAL"
+echo "REMOTE=$REMOTE"
+echo "BASE=$BASE"
 
 if [ "$LOCAL" = "$REMOTE" ]; then
   echo "Already up to date."
@@ -20,9 +28,10 @@ if [ "$LOCAL" = "$REMOTE" ]; then
 fi
 
 if [ "$LOCAL" != "$BASE" ]; then
-  echo "ERROR: Local commits exist that are not on origin. Manual intervention required." >&2
-  git -C /config log --oneline HEAD ^FETCH_HEAD >&2
+  echo "ERROR: Local commits exist that are not on origin/master. Manual intervention required."
+  git -C /config log --oneline HEAD ^origin/master
   exit 1
 fi
 
 git -C /config pull --ff-only
+echo "Done."
