@@ -3,11 +3,13 @@
   description: Pull the latest configuration from GitHub when GitHub sends a push webhook.
   triggers:
   - trigger: webhook
-    webhook_id: !secret github_deploy_webhook_id
+    webhook_id: github-deploy-homeassistant-8b3f1c6d9a4e42f0a7c5d2e1
     allowed_methods:
     - POST
     local_only: false
-  conditions: []
+  conditions:
+  - condition: template
+    value_template: "{{ trigger.json.ref | default('') == 'refs/heads/master' }}"
   actions:
   - action: shell_command.git_pull
   - delay:
