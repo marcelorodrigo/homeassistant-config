@@ -66,24 +66,23 @@
       data:
         brightness_pct: 65
         color_temp_kelvin: 2800
-  - alias: Wait until there is no motion (max 30 min safety timeout)
+  - alias: Wait until there is no motion + linger delay (max 30 min safety timeout)
     wait_for_trigger:
     - trigger: state
       entity_id:
       - binary_sensor.entryway_sensor_occupancy
       to: 'off'
+      for:
+        minutes: "{{ states('input_number.entryway_light_linger_minutes') | float }}"
     timeout: "00:30:00"
     continue_on_timeout: true
-  - alias: Wait the configurable linger delay after motion clears
-    delay:
-      minutes: "{{ states('input_number.entryway_light_linger_minutes') | float }}"
   - alias: Turn off the light
     action: light.turn_off
     data:
       transition: 4
     target:
       entity_id: light.entryway_lamp
-  mode: restart
+  mode: single
   max_exceeded: silent
 - id: '1739046619134'
   alias: Klikos collection notification
