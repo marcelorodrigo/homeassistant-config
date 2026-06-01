@@ -24,51 +24,129 @@ views:
             grid_options:
               columns: full
 
-      # Detections & controls
+      # Detection Settings
       - type: grid
-        title: Sensors
+        title: Detection Settings
         cards:
           - type: heading
-            heading: Detections
+            heading: Configure Detection
             heading_style: subtitle
-            icon: mdi:motion-sensor
+            icon: mdi:tune
 
           - type: tile
-            entity: binary_sensor.living_room_camera_person_detection
-            name: Person
-            icon: mdi:account
+            entity: select.living_room_camera_person_detection
+            name: Person Detection
+            icon: mdi:account-search
             grid_options:
               columns: 6
 
           - type: tile
-            entity: binary_sensor.living_room_camera_cell_motion_detection
-            name: Motion
-            icon: mdi:run
+            entity: select.living_room_camera_motion_detection
+            name: Motion Detection
+            icon: mdi:motion-sensor
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: number.living_room_camera_motion_detection_digital_sensitivity
+            name: Motion Sensitivity
+            icon: mdi:gauge
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.living_room_camera_tamper_detection
+            name: Tamper Detection
+            icon: mdi:shield-alert
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.living_room_camera_automatic_alarm
+            name: Automatic Alarm
+            icon: mdi:bell-alert
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.living_room_camera_baby_cry_detection
+            name: Baby Cry Detection
+            icon: mdi:baby-face-outline
+            grid_options:
+              columns: 6
+
+      # Vision & Audio
+      - type: grid
+        title: Vision & Audio
+        cards:
+          - type: heading
+            heading: Camera Settings
+            heading_style: subtitle
+            icon: mdi:camera-metering-center
+
+          - type: tile
+            entity: select.living_room_camera_night_vision
+            name: Night Vision
+            icon: mdi:moon-waning-crescent
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.living_room_camera_night_vision_switching
+            name: Auto Night Mode
+            icon: mdi:brightness-auto
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.living_room_camera_light_frequency
+            name: Light Frequency
+            icon: mdi:flash
             grid_options:
               columns: 6
 
           - type: tile
             entity: binary_sensor.living_room_camera_noise
-            name: Sound
+            name: Sound Detection
             icon: mdi:volume-high
             grid_options:
               columns: 6
 
           - type: tile
-            entity: binary_sensor.living_room_camera_motion_alarm
-            name: Alarm
-            icon: mdi:alarm-light
+            entity: number.living_room_camera_microphone_volume
+            name: Mic Volume
+            icon: mdi:microphone
             grid_options:
               columns: 6
 
-          - type: heading
-            heading: Controls
-            heading_style: subtitle
-            icon: mdi:tune
+          - type: tile
+            entity: number.living_room_camera_speaker_volume
+            name: Speaker Volume
+            icon: mdi:volume-high
+            grid_options:
+              columns: 6
 
           - type: tile
+            entity: switch.living_room_camera_microphone_mute
+            name: Mute Microphone
+            icon: mdi:microphone-off
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.living_room_camera_microphone_noise_cancellation
+            name: Noise Cancellation
+            icon: mdi:noise-off
+            grid_options:
+              columns: 6
+
+      # Lighting & Privacy
+      - type: grid
+        title: Lighting & Privacy
+        cards:
+          - type: tile
             entity: switch.living_room_camera_privacy
-            name: Privacy
+            name: Privacy Mode
             icon: mdi:eye-off
             grid_options:
               columns: 6
@@ -80,16 +158,75 @@ views:
             grid_options:
               columns: 6
 
-      # Pan & tilt
+          - type: tile
+            entity: number.living_room_camera_spotlight_intensity
+            name: Spotlight Intensity
+            icon: mdi:brightness-6
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.living_room_camera_spotlight_on_off_for
+            name: Spotlight Timer
+            icon: mdi:timer
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.living_room_camera_privacy_zones
+            name: Privacy Zones
+            icon: mdi:zone
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.living_room_camera_lens_distortion_correction
+            name: Distortion Correction
+            icon: mdi:lens
+            grid_options:
+              columns: 6
+
+      # Recording & Storage
       - type: grid
-        title: Pan & Tilt
+        title: Recording & Storage
+        cards:
+          - type: tile
+            entity: switch.living_room_camera_record_to_sd_card
+            name: Record to SD Card
+            icon: mdi:database
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.living_room_camera_record_audio
+            name: Record Audio
+            icon: mdi:microphone-check
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: sensor.living_room_camera_recordings_synchronization
+            name: Cloud Sync Status
+            icon: mdi:cloud-sync
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.living_room_camera_media_sync
+            name: Media Sync
+            icon: mdi:sync
+            grid_options:
+              columns: 6
+
+      # Pan & Tilt Controls
+      - type: grid
+        title: Pan & Tilt Controls
         cards:
           - type: heading
-            heading: Pan & Tilt
+            heading: Camera Movement
             heading_style: subtitle
             icon: mdi:pan
 
-          # Row: [empty] [Up] [empty] [empty]
           - type: button
             entity: button.living_room_camera_move_up
             name: Up
@@ -103,7 +240,6 @@ views:
               columns: 3
               rows: 2
 
-          # Row: [Left] [Calibrate] [Right]
           - type: button
             entity: button.living_room_camera_move_left
             name: Left
@@ -140,7 +276,6 @@ views:
             grid_options:
               columns: 3
 
-          # Row: [empty] [Down] [empty] [empty]
           - type: button
             entity: button.living_room_camera_move_down
             name: Down
@@ -152,6 +287,66 @@ views:
                 entity_id: button.living_room_camera_move_down
             grid_options:
               columns: 3
+
+      # Network & System
+      - type: grid
+        title: Network & System
+        cards:
+          - type: tile
+            entity: sensor.living_room_camera_rssi
+            name: Signal Strength
+            icon: mdi:wifi
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: sensor.living_room_camera_network_ssid
+            name: WiFi Network
+            icon: mdi:network-wifi
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: sensor.living_room_camera_link_type
+            name: Link Type
+            icon: mdi:ethernet
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: sensor.living_room_camera_last_automatic_reboot_time
+            name: Last Reboot
+            icon: mdi:restart
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.living_room_camera_automatic_reboot
+            name: Auto Reboot
+            icon: mdi:power-cycle
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.living_room_camera_automatic_reboot_time
+            name: Reboot Schedule
+            icon: mdi:clock
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.living_room_camera_automatically_upgrade_firmware
+            name: Auto Upgrade
+            icon: mdi:auto-upload
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.living_room_camera_indicator_led
+            name: Indicator LED
+            icon: mdi:led-on
+            grid_options:
+              columns: 6
 
   # ─────────────────────────────────────────────────────────────────────────────
   # Garage — TP-Link Tapo C310 (fixed, outdoor)
@@ -178,44 +373,122 @@ views:
             grid_options:
               columns: full
 
-      # Detections & controls
+      # Detection Settings
       - type: grid
-        title: Sensors & Controls
+        title: Detection Settings
         cards:
           - type: heading
-            heading: Detections
-            heading_style: subtitle
-            icon: mdi:motion-sensor
-
-          - type: tile
-            entity: binary_sensor.outdoor_camera_person_detection
-            name: Person
-            icon: mdi:account
-            grid_options:
-              columns: 4
-
-          - type: tile
-            entity: binary_sensor.outdoor_camera_cell_motion_detection
-            name: Motion
-            icon: mdi:run
-            grid_options:
-              columns: 4
-
-          - type: tile
-            entity: binary_sensor.outdoor_camera_noise
-            name: Sound
-            icon: mdi:volume-high
-            grid_options:
-              columns: 4
-
-          - type: heading
-            heading: Controls
+            heading: Configure Detection
             heading_style: subtitle
             icon: mdi:tune
 
           - type: tile
+            entity: select.outdoor_camera_person_detection
+            name: Person Detection
+            icon: mdi:account-search
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.outdoor_camera_motion_detection
+            name: Motion Detection
+            icon: mdi:motion-sensor
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: number.outdoor_camera_motion_detection_digital_sensitivity
+            name: Motion Sensitivity
+            icon: mdi:gauge
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.outdoor_camera_tamper_detection
+            name: Tamper Detection
+            icon: mdi:shield-alert
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.outdoor_camera_automatic_alarm
+            name: Automatic Alarm
+            icon: mdi:bell-alert
+            grid_options:
+              columns: 6
+
+      # Vision & Audio
+      - type: grid
+        title: Vision & Audio
+        cards:
+          - type: heading
+            heading: Camera Settings
+            heading_style: subtitle
+            icon: mdi:camera-metering-center
+
+          - type: tile
+            entity: select.outdoor_camera_night_vision
+            name: Night Vision
+            icon: mdi:moon-waning-crescent
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.outdoor_camera_night_vision_switching
+            name: Auto Night Mode
+            icon: mdi:brightness-auto
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.outdoor_camera_light_frequency
+            name: Light Frequency
+            icon: mdi:flash
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: binary_sensor.outdoor_camera_noise
+            name: Sound Detection
+            icon: mdi:volume-high
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: number.outdoor_camera_microphone_volume
+            name: Mic Volume
+            icon: mdi:microphone
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: number.outdoor_camera_speaker_volume
+            name: Speaker Volume
+            icon: mdi:volume-high
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.outdoor_camera_microphone_mute
+            name: Mute Microphone
+            icon: mdi:microphone-off
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.outdoor_camera_microphone_noise_cancellation
+            name: Noise Cancellation
+            icon: mdi:noise-off
+            grid_options:
+              columns: 6
+
+      # Lighting & Privacy
+      - type: grid
+        title: Lighting & Privacy
+        cards:
+          - type: tile
             entity: switch.outdoor_camera_privacy
-            name: Privacy
+            name: Privacy Mode
             icon: mdi:eye-off
             grid_options:
               columns: 6
@@ -224,5 +497,125 @@ views:
             entity: light.outdoor_camera_floodlight_timed
             name: Floodlight
             icon: mdi:spotlight-beam
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: number.outdoor_camera_spotlight_intensity
+            name: Spotlight Intensity
+            icon: mdi:brightness-6
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.outdoor_camera_spotlight_on_off_for
+            name: Spotlight Timer
+            icon: mdi:timer
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.outdoor_camera_privacy_zones
+            name: Privacy Zones
+            icon: mdi:zone
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.outdoor_camera_lens_distortion_correction
+            name: Distortion Correction
+            icon: mdi:lens
+            grid_options:
+              columns: 6
+
+      # Recording & Storage
+      - type: grid
+        title: Recording & Storage
+        cards:
+          - type: tile
+            entity: switch.outdoor_camera_record_to_sd_card
+            name: Record to SD Card
+            icon: mdi:database
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.outdoor_camera_record_audio
+            name: Record Audio
+            icon: mdi:microphone-check
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: sensor.outdoor_camera_recordings_synchronization
+            name: Cloud Sync Status
+            icon: mdi:cloud-sync
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.outdoor_camera_media_sync
+            name: Media Sync
+            icon: mdi:sync
+            grid_options:
+              columns: 6
+
+      # Network & System
+      - type: grid
+        title: Network & System
+        cards:
+          - type: tile
+            entity: sensor.outdoor_camera_rssi
+            name: Signal Strength
+            icon: mdi:wifi
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: sensor.outdoor_camera_network_ssid
+            name: WiFi Network
+            icon: mdi:network-wifi
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: sensor.outdoor_camera_link_type
+            name: Link Type
+            icon: mdi:ethernet
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: sensor.outdoor_camera_last_automatic_reboot_time
+            name: Last Reboot
+            icon: mdi:restart
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.outdoor_camera_automatic_reboot
+            name: Auto Reboot
+            icon: mdi:power-cycle
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.outdoor_camera_automatic_reboot_time
+            name: Reboot Schedule
+            icon: mdi:clock
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.outdoor_camera_automatically_upgrade_firmware
+            name: Auto Upgrade
+            icon: mdi:auto-upload
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.outdoor_camera_indicator_led
+            name: Indicator LED
+            icon: mdi:led-on
             grid_options:
               columns: 6
