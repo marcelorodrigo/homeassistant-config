@@ -163,8 +163,8 @@
     trigger: time
   conditions:
   - condition: template
-    value_template: '{{ states(''sensor.afvalinfo_afval_trash_type_today'') != ''no''
-      }}'
+    value_template: '{{ states(''sensor.afvalinfo_afval_trash_type_today'') not in
+      [''no'', ''papier'', ''paper''] }}'
   actions:
   - data:
       title: Trash Collection Reminder
