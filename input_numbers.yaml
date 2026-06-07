@@ -1,0 +1,18 @@
+washing_machine_duration_minutes:
+  name: "Washing Machine Duration"
+  initial: 135
+  min: 1
+  max: 300
+  step: 5
+  unit_of_measurement: "minutes"
+  icon: "mdi:washing-machine"
+  mode: slider
+dryer_machine_duration_minutes:
+  name: "Dryer Machine Duration"
+  initial: 117
+  min: 1
+  max: 300
+  step: 5
+  unit_of_measurement: "minutes"
+  icon: "mdi:tumble-dryer"
+  mode: slider

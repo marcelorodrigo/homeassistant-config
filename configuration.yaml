@@ -18,6 +18,8 @@ lovelace:
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
+input_number: !include input_numbers.yaml
+input_text: !include input_texts.yaml
 
 http:
   use_x_forwarded_for: true
