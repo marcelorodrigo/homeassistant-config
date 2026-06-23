@@ -73,7 +73,7 @@
       - binary_sensor.entryway_sensor_occupancy
       to: 'off'
       for:
-        minutes: "{{ states('input_number.entryway_light_linger_minutes') | float }}"
+        minutes: "{{ states('input_number.entryway_light_linger_minutes') | float(5) }}"
     timeout: "00:30:00"
     continue_on_timeout: true
   - alias: Turn off the light

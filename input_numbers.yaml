@@ -16,3 +16,12 @@ dryer_machine_duration_minutes:
   unit_of_measurement: "minutes"
   icon: "mdi:tumble-dryer"
   mode: slider
+entryway_light_linger_minutes:
+  name: "Entryway Light Linger Minutes"
+  initial: 5
+  min: 1
+  max: 30
+  step: 1
+  unit_of_measurement: "minutes"
+  icon: "mdi:timer-outline"
+  mode: slider
