@@ -265,7 +265,7 @@
     repeat:
       for_each:
         - person: marcelo
-        - person: janaina
+        - person: jana
         - person: guilherme
         - person: julia
       sequence:
@@ -354,7 +354,7 @@
     repeat:
       for_each:
         - person: marcelo
-        - person: janaina
+        - person: jana
         - person: guilherme
         - person: julia
       sequence:

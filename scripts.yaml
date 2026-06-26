@@ -24,4 +24,4 @@ new_script:
           message: '{{ message }}'
           title: '{{ title }}'
           data: '{{ data | default({}) }}'
-        action: notify.mobile_app_{{ repeat.item | replace('.', '_') }}
+        action: notify.mobile_app_android_{{ repeat.item | replace('.', '_') }}
