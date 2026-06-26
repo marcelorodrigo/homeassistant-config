@@ -152,7 +152,7 @@
   - action: notify.mobile_app_android_marcelo
     metadata: {}
     data:
-      message: Entryway lamp looks like off.
+      message: Entryway lamp is offline.
   mode: single
 - id: '1740681576033'
   alias: Trash Collection Reminder
