@@ -382,10 +382,9 @@
       seconds: 0
   conditions: []
   actions:
-  - type: turn_on
-    device_id: 0d227bcb6db3bde4d848cdb1c4e2ca24
-    entity_id: 76acadcf03fc15e2c05663c6fc2d52a7
-    domain: switch
+  - action: switch.turn_on
+    target:
+      entity_id: switch.adguard_home_protection
   - action: notify.send_message
     metadata: {}
     data:
