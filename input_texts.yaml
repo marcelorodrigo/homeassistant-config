@@ -1,3 +1,7 @@
+washing_machine_device_to_notify:
+  name: "Washing Machine device to notify"
+  icon: "mdi:cellphone-cog"
+
 dryer_machine_device_to_notify:
   name: "Dryer Machine device to notify"
   icon: "mdi:cellphone-cog"

@@ -205,7 +205,7 @@
   actions:
   - alias: Save the user who triggered this cycle
     target:
-      entity_id: input_text.wash_machine_device_to_notify
+      entity_id: input_text.washing_machine_device_to_notify
     data:
       value: '{{ trigger.event.context.user_id }}'
     action: input_text.set_value
@@ -222,7 +222,7 @@
     data:
       title: Washing Machine
       message: >-
-        {% set uid = states('input_text.wash_machine_device_to_notify') %}
+        {% set uid = states('input_text.washing_machine_device_to_notify') %}
         {% set person = states.person | selectattr('attributes.user_id', 'eq', uid) | list %}
         {% if person %}{{ person[0].name }}{% else %}Someone{% endif %}
         started a washing cycle.
