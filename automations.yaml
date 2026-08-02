@@ -86,17 +86,22 @@
   max_exceeded: silent
 - id: '1739046619134'
   alias: Klikos collection notification
-  description: Sends a notification at 16:00 if there's klikos to collect
+  description: Sends a notification at 16:00 if there's a valid Kliko collection type today
   triggers:
   - at: '16:00:00'
     trigger: time
   conditions:
-  - condition: template
-    value_template: '{{ states(''sensor.afvalinfo_afval_trash_type_today'') != ''no''
-      }}'
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.afvalinfo_afval_trash_type_today
+      state:
+      - 'no'
+      - 'unknown'
+      - 'unavailable'
   actions:
   - data:
-      message: "\U0001F519\U0001F5D1️ Collect Kliko: {{states('sensor.afvalinfo_afval_trash_type_tomorrow')
+      message: "\U0001F519\U0001F5D1️ Collect Kliko: {{states('sensor.afvalinfo_afval_trash_type_today')
         }}\n"
     action: notify.send_message
   mode: single
