@@ -35,6 +35,14 @@ This repository is the **source of truth** for all Home Assistant configuration.
 3. If the merge would not be fast-forward, the script **refuses** — squash/rebase local work first
 4. SSH key at `/config/.ssh/id_ed25519`, webhook ID in gitignored `secrets.yaml`
 
+## CI configuration validation
+
+- `.github/workflows/home-assistant-check.yaml` runs HA's `check_config` on every PR to `master` (job `home-assistant-config-check`, check name "Home Assistant configuration check")
+- Pinned to immutable action SHAs and Home Assistant Core `2026.8.0`; bump `version` in the workflow when Core is upgraded
+- The check validates the **repository tree only**: `.storage/`, `custom_components/`, `secrets.yaml`, and UI-created helpers are not present in CI
+- Unknown integrations (HACS) and missing `themes/` dir surface as warnings, not failures — matching live HA
+- Make the check a **required status check** on `master` branch protection for real pre-merge enforcement
+
 ## Agent tools
 
 - `opencode.json` configures `ha-mcp` (via `uvx ha-mcp@latest`) — use the `ha_*` Home Assistant toolset
