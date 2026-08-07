@@ -109,6 +109,12 @@
       message: "\U0001F519\U0001F5D1️ Collect Kliko: {{states('sensor.afvalinfo_afval_trash_type_today')
         }}\n"
     action: notify.send_message
+    target:
+      entity_id:
+      - notify.android_guilherme
+      - notify.android_jana
+      - notify.android_julia
+      - notify.android_marcelo
   mode: single
 - id: '1739217106039'
   alias: IKEA Living Room Lights Remote Controller
@@ -407,6 +413,8 @@
     metadata: {}
     data:
       message: Adguard Home is ON
+    target:
+      entity_id: notify.android_marcelo
   mode: single
 - id: '1749571581335'
   alias: Gate Remote Automation
@@ -426,6 +434,12 @@
         metadata: {}
         data:
           message: Gate Remote button was pressed
+        target:
+          entity_id:
+          - notify.android_guilherme
+          - notify.android_jana
+          - notify.android_julia
+          - notify.android_marcelo
       off_press_action:
       - action: media_player.play_media
         target:
