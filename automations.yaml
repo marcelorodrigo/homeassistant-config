@@ -416,7 +416,7 @@
         metadata: {}
         data: {}
         target:
-          device_id: 5ced47830e598819cfd82982304e7d21
+          entity_id: switch.gate_relay
       - action: notify.send_message
         metadata: {}
         data:
@@ -478,15 +478,19 @@
           brightness_pct: 65
           color_temp_kelvin: 3400
       on_hold_action:
-      - device_id: 182c5f603998dc6281bcbb1e671dd9d4
-        domain: light
-        entity_id: 53ec5aecf58b9d5fbffae5dd1e7a6f26
-        type: brightness_increase
+      - action: light.turn_on
+        metadata: {}
+        target:
+          entity_id: light.julia_lamp
+        data:
+          brightness_step_pct: 10
       off_hold_action:
-      - device_id: 182c5f603998dc6281bcbb1e671dd9d4
-        domain: light
-        entity_id: 53ec5aecf58b9d5fbffae5dd1e7a6f26
-        type: brightness_decrease
+      - action: light.turn_on
+        metadata: {}
+        target:
+          entity_id: light.julia_lamp
+        data:
+          brightness_step_pct: -10
 - id: '1765299190135'
   alias: Office Remote Automation
   description: ''
@@ -512,15 +516,19 @@
           color_temp_kelvin: 3400
           brightness_pct: 65
       on_hold_action:
-      - device_id: 31eeec7e23154de2bbd4d3886996f4c6
-        domain: light
-        entity_id: 71eac8c77de5bee4708c5a2842a89756
-        type: brightness_increase
+      - action: light.turn_on
+        metadata: {}
+        target:
+          entity_id: light.office_lamp
+        data:
+          brightness_step_pct: 10
       off_hold_action:
-      - device_id: 31eeec7e23154de2bbd4d3886996f4c6
-        domain: light
-        entity_id: 71eac8c77de5bee4708c5a2842a89756
-        type: brightness_decrease
+      - action: light.turn_on
+        metadata: {}
+        target:
+          entity_id: light.office_lamp
+        data:
+          brightness_step_pct: -10
       on_double_press_action:
       - action: music_assistant.play_media
         metadata: {}
@@ -554,15 +562,19 @@
           brightness_pct: 65
           color_temp_kelvin: 3400
       on_hold_action:
-      - device_id: b176a6eb546d3492991b1bcd8387e937
-        domain: light
-        entity_id: 79ce191f4f2d0defb5e48efb45530ccc
-        type: brightness_increase
+      - action: light.turn_on
+        metadata: {}
+        target:
+          entity_id: light.guilherme_lamp
+        data:
+          brightness_step_pct: 10
       off_hold_action:
-      - device_id: b176a6eb546d3492991b1bcd8387e937
-        domain: light
-        entity_id: 79ce191f4f2d0defb5e48efb45530ccc
-        type: brightness_decrease
+      - action: light.turn_on
+        metadata: {}
+        target:
+          entity_id: light.guilherme_lamp
+        data:
+          brightness_step_pct: -10
 - id: '1765394256832'
   alias: Master Remote Automation
   description: ''
@@ -588,12 +600,16 @@
           brightness_pct: 65
           color_temp_kelvin: 3400
       on_hold_action:
-      - device_id: fc7615bd5f4862f484f4bbb3a8547fcd
-        domain: light
-        entity_id: bc138df47a10abbb4b514e80ab091f4e
-        type: brightness_increase
+      - action: light.turn_on
+        metadata: {}
+        target:
+          entity_id: light.master_lamp
+        data:
+          brightness_step_pct: 10
       off_hold_action:
-      - device_id: fc7615bd5f4862f484f4bbb3a8547fcd
-        domain: light
-        entity_id: bc138df47a10abbb4b514e80ab091f4e
-        type: brightness_decrease
+      - action: light.turn_on
+        metadata: {}
+        target:
+          entity_id: light.master_lamp
+        data:
+          brightness_step_pct: -10
