@@ -46,11 +46,16 @@
   actions:
   - alias: Turn on the light – brightness adapts to time of day
     choose:
-    # Deep night: dimmer and warmer
+    # Deep night: dimmer and warmer (spans midnight, so use OR of after-sunset and before-sunrise)
     - conditions:
-      - condition: sun
-        after: sunset
-        after_offset: "1:00:00"
+      - condition: or
+        conditions:
+        - condition: sun
+          after: sunset
+          after_offset: "1:00:00"
+        - condition: sun
+          before: sunrise
+          before_offset: "-1:00:00"
       sequence:
       - action: light.turn_on
         target:
