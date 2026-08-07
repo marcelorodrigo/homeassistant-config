@@ -1,4 +1,4 @@
-new_script:
+notify_all_users_at_home:
   alias: Send notification to all users at home
   fields:
     message:
