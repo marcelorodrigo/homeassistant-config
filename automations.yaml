@@ -281,23 +281,46 @@
     action: scene.delete
     target:
       entity_id: scene.washing_machine_lights_snapshot
-  - alias: Notify only people who are home
-    repeat:
-      for_each:
-        - person: marcelo
-        - person: jana
-        - person: guilherme
-        - person: julia
-      sequence:
-        - choose:
-          - conditions:
-            - condition: template
-              value_template: "{{ is_state('person.' ~ repeat.item.person, 'home') }}"
-            sequence:
-              - action: "notify.mobile_app_android_{{ repeat.item.person }}"
-                data:
-                  title: Washing Machine
-                  message: Time to put the clothes to dry, washing cycle is over.
+  - alias: Notify marcelo if home
+    if:
+      - condition: state
+        entity_id: person.marcelo
+        state: home
+    then:
+      - action: notify.mobile_app_android_marcelo
+        data:
+          title: Washing Machine
+          message: Time to put the clothes to dry, washing cycle is over.
+  - alias: Notify jana if home
+    if:
+      - condition: state
+        entity_id: person.jana
+        state: home
+    then:
+      - action: notify.mobile_app_android_jana
+        data:
+          title: Washing Machine
+          message: Time to put the clothes to dry, washing cycle is over.
+  - alias: Notify guilherme if home
+    if:
+      - condition: state
+        entity_id: person.guilherme
+        state: home
+    then:
+      - action: notify.mobile_app_android_guilherme
+        data:
+          title: Washing Machine
+          message: Time to put the clothes to dry, washing cycle is over.
+  - alias: Notify julia if home
+    if:
+      - condition: state
+        entity_id: person.julia
+        state: home
+    then:
+      - action: notify.mobile_app_android_julia
+        data:
+          title: Washing Machine
+          message: Time to put the clothes to dry, washing cycle is over.
   mode: single
 - id: '1740751679424'
   alias: NFC Dryer Machine was scanned
@@ -374,23 +397,46 @@
     action: scene.delete
     target:
       entity_id: scene.dryer_machine_lights_snapshot
-  - alias: Notify only people who are home
-    repeat:
-      for_each:
-        - person: marcelo
-        - person: jana
-        - person: guilherme
-        - person: julia
-      sequence:
-        - choose:
-          - conditions:
-            - condition: template
-              value_template: "{{ is_state('person.' ~ repeat.item.person, 'home') }}"
-            sequence:
-              - action: "notify.mobile_app_android_{{ repeat.item.person }}"
-                data:
-                  title: Dryer Machine
-                  message: Time to fold the clothes, they are dry.
+  - alias: Notify marcelo if home
+    if:
+      - condition: state
+        entity_id: person.marcelo
+        state: home
+    then:
+      - action: notify.mobile_app_android_marcelo
+        data:
+          title: Dryer Machine
+          message: Time to fold the clothes, they are dry.
+  - alias: Notify jana if home
+    if:
+      - condition: state
+        entity_id: person.jana
+        state: home
+    then:
+      - action: notify.mobile_app_android_jana
+        data:
+          title: Dryer Machine
+          message: Time to fold the clothes, they are dry.
+  - alias: Notify guilherme if home
+    if:
+      - condition: state
+        entity_id: person.guilherme
+        state: home
+    then:
+      - action: notify.mobile_app_android_guilherme
+        data:
+          title: Dryer Machine
+          message: Time to fold the clothes, they are dry.
+  - alias: Notify julia if home
+    if:
+      - condition: state
+        entity_id: person.julia
+        state: home
+    then:
+      - action: notify.mobile_app_android_julia
+        data:
+          title: Dryer Machine
+          message: Time to fold the clothes, they are dry.
   mode: single
 - id: '1741881323198'
   alias: Turn ON Adguard after 15 minutes
