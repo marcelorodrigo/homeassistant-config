@@ -21,12 +21,6 @@ scene: !include scenes.yaml
 input_number: !include input_numbers.yaml
 input_text: !include input_texts.yaml
 
-http:
-  use_x_forwarded_for: true
-  trusted_proxies:
-    - 172.30.33.0/24
-    - 192.168.68.0/24
-
 shell_command:
   git_pull: /config/scripts/git_pull.sh
 
