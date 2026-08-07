@@ -8,7 +8,7 @@ This is a **YAML-managed Home Assistant configuration** deployed via GitHub push
 |------|---------|
 | `configuration.yaml` | Root: loads YAML files + `shell_command.git_pull` for deployment |
 | `automations.yaml` | All YAML automations |
-| `scripts.yaml` | Single `notify_all_home` script |
+| `scripts.yaml` | Single `notify_all_users_at_home` script |
 | `scenes.yaml` | Empty — scenes managed via UI only |
 | `input_numbers.yaml` | washing/dryer machine durations |
 | `input_texts.yaml` | dryer device-to-notify |
@@ -46,7 +46,7 @@ This repository is the **source of truth** for all Home Assistant configuration.
 - Cameras: `<location>_camera_<feature>` (e.g. `select.living_room_camera_person_detection`)
 - Appliance helpers: `<appliance>_<purpose>` (e.g. `timer.washing_machine_timer`, `input_number.washing_machine_duration_minutes`)
 - Remotes: `<room>_remote` (e.g. `sensor.living_room_lights_remote_action`)
-- Household persons: `marcelo`, `janaina`, `guilherme`, `julia`
+- Household persons: `marcelo`, `jana`, `guilherme`, `julia`
 
 ## Sensitive data
 
