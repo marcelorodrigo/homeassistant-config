@@ -678,3 +678,61 @@
           entity_id: light.master_lamp
         data:
           brightness_step_pct: -10
+- id: 'entryway-light-idle-auto-off'
+  alias: Entryway Light Idle Auto-Off
+  description: >-
+    Turn off the entryway lamp when it has been on with no motion for
+    input_number.entryway_light_linger_minutes, at any time of day.
+    Covers lights switched on manually that the motion automation ignores.
+    Re-arms on every motion event so the linger delay always counts from the
+    last presence, and never forces the light off while someone is present.
+  mode: restart
+  triggers:
+  - trigger: state
+    entity_id: light.entryway_lamp
+    to: 'on'
+  - trigger: state
+    entity_id: binary_sensor.entryway_sensor_occupancy
+    to: 'on'
+  conditions:
+  - condition: state
+    entity_id: light.entryway_lamp
+    state: 'on'
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.entryway_sensor_occupancy
+        state: 'on'
+      sequence:
+      - wait_for_trigger:
+        - trigger: state
+          entity_id: binary_sensor.entryway_sensor_occupancy
+          to: 'off'
+          for:
+            minutes: "{{ states('input_number.entryway_light_linger_minutes') | float(5) }}"
+        timeout: "02:00:00"
+        continue_on_timeout: false
+      - condition: state
+        entity_id: light.entryway_lamp
+        state: 'on'
+      - action: light.turn_off
+        target:
+          entity_id: light.entryway_lamp
+        data:
+          transition: 4
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.entryway_sensor_occupancy
+        state: 'off'
+      sequence:
+      - delay:
+          minutes: "{{ states('input_number.entryway_light_linger_minutes') | float(5) }}"
+      - condition: state
+        entity_id: light.entryway_lamp
+        state: 'on'
+      - action: light.turn_off
+        target:
+          entity_id: light.entryway_lamp
+        data:
+          transition: 4
