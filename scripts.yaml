@@ -28,7 +28,7 @@ notify_all_users_at_home:
 
 play_playlist:
   alias: Play a Music Assistant playlist on the main speakers
-  description: Plays a Music Assistant playlist and enables shuffle on the target player.
+  description: Plays a Music Assistant playlist, capping the starting volume at 40%, then enables shuffle.
   fields:
     playlist:
       description: Music Assistant playlist URI
@@ -38,6 +38,15 @@ play_playlist:
       default: media_player.all_speakers
   mode: queued
   sequence:
+  # Cap only: keep a quiet setting, pull a loud one down, never raise it.
+  - variables:
+      max_volume: 0.4
+  - action: media_player.volume_set
+    continue_on_error: true
+    target:
+      entity_id: '{{ player }}'
+    data:
+      volume_level: "{{ [state_attr(player, 'volume_level') | float(max_volume), max_volume] | min }}"
   - action: media_player.play_media
     target:
       entity_id: '{{ player }}'
