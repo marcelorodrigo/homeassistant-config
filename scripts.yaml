@@ -25,3 +25,27 @@ notify_all_users_at_home:
           title: '{{ title }}'
           data: '{{ data | default({}) }}'
         action: notify.mobile_app_android_{{ repeat.item | replace('.', '_') }}
+
+play_playlist:
+  alias: Play a Music Assistant playlist on the main speakers
+  description: Plays a Music Assistant playlist and enables shuffle on the target player.
+  fields:
+    playlist:
+      description: Music Assistant playlist URI
+      example: library://playlist/115
+    player:
+      description: Target Music Assistant player
+      default: media_player.all_speakers
+  mode: queued
+  sequence:
+  - action: media_player.play_media
+    target:
+      entity_id: '{{ player }}'
+    data:
+      media_content_id: '{{ playlist }}'
+      media_content_type: music
+  - action: media_player.shuffle_set
+    target:
+      entity_id: '{{ player }}'
+    data:
+      shuffle: true

@@ -403,3 +403,99 @@ views:
             features_position: bottom
             grid_options:
               columns: full
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Music — Music Assistant playlist buttons playing on All Speakers
+  # ─────────────────────────────────────────────────────────────────────────────
+  - title: Music
+    path: music
+    type: sections
+    icon: mdi:music
+    max_columns: 2
+    sections:
+      # Playback controls for the Music Assistant group
+      - type: grid
+        cards:
+          - type: heading
+            heading: Now Playing
+            heading_style: title
+            icon: mdi:speaker-multiple
+
+          - type: media-control
+            entity: media_player.all_speakers
+
+      # One tap plays the playlist and enables shuffle via script.play_playlist
+      - type: grid
+        cards:
+          - type: heading
+            heading: Playlists
+            heading_style: title
+            icon: mdi:playlist-music
+
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: heading
+                    heading: Coffee is ready
+                    heading_style: subtitle
+                    icon: mdi:coffee
+
+                  - type: picture
+                    image: https://mosaic.scdn.co/640/ab67616d00001e022fefe7a9143a3089f786a861ab67616d00001e02a20f207a64ce7139907b8247ab67616d00001e02aedbd4cfb18eaf688ae3d288ab67616d00001e02e6c0c82dce5500529fe943a3
+                    alt_text: Coffee is ready playlist cover
+                    tap_action:
+                      action: perform-action
+                      perform_action: script.play_playlist
+                      data:
+                        playlist: library://playlist/115
+
+              - type: vertical-stack
+                cards:
+                  - type: heading
+                    heading: Sky Radio Hits
+                    heading_style: subtitle
+                    icon: mdi:radio
+
+                  - type: picture
+                    image: https://image-cdn-fa.spotifycdn.com/image/ab67706c0000da8465015bf77e3548609085e8e6
+                    alt_text: Sky Radio Hits playlist cover
+                    tap_action:
+                      action: perform-action
+                      perform_action: script.play_playlist
+                      data:
+                        playlist: library://playlist/127
+
+              - type: vertical-stack
+                cards:
+                  - type: heading
+                    heading: Italian Classics
+                    heading_style: subtitle
+                    icon: mdi:food-variant
+
+                  - type: picture
+                    image: https://mosaic.scdn.co/640/ab67616d00001e02228264ef165a3de1041d0c22ab67616d00001e0256e5814ac36841ba7f992b65ab67616d00001e026fe5eb859b38facc2c1cadc5ab67616d00001e02d919d138f6e83aba728bd697
+                    alt_text: Italian Classics playlist cover
+                    tap_action:
+                      action: perform-action
+                      perform_action: script.play_playlist
+                      data:
+                        playlist: library://playlist/98
+
+              - type: vertical-stack
+                cards:
+                  - type: heading
+                    heading: Easy Listening
+                    heading_style: subtitle
+                    icon: mdi:sofa
+
+                  - type: picture
+                    image: https://mosaic.scdn.co/640/ab67616d00001e02077d7271b180ff4d3e1f7cd7ab67616d00001e0231edc5bd8f156b173015ed19ab67616d00001e025d11c2fe73a7d376d3b06107ab67616d00001e02db5d336c648e8f540262a1c2
+                    alt_text: Easy Listening playlist cover
+                    tap_action:
+                      action: perform-action
+                      perform_action: script.play_playlist
+                      data:
+                        playlist: library://playlist/97
