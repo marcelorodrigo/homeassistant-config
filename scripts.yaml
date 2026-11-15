@@ -34,27 +34,28 @@ play_playlist:
       description: Music Assistant playlist URI
       example: library://playlist/115
     player:
-      description: Target Music Assistant player
-      default: media_player.all_speakers
+      description: Target Music Assistant player (defaults to media_player.all_speakers)
   mode: queued
   sequence:
-  # Cap only: keep a quiet setting, pull a loud one down, never raise it.
+  # fields.player.default is UI metadata only — resolve the fallback at runtime.
   - variables:
+      target_player: "{{ player | default('media_player.all_speakers', true) }}"
+      # Cap only: keep a quiet setting, pull a loud one down, never raise it.
       max_volume: 0.4
   - action: media_player.volume_set
     continue_on_error: true
     target:
-      entity_id: '{{ player }}'
+      entity_id: '{{ target_player }}'
     data:
-      volume_level: "{{ [state_attr(player, 'volume_level') | float(max_volume), max_volume] | min }}"
+      volume_level: "{{ [state_attr(target_player, 'volume_level') | float(max_volume), max_volume] | min }}"
   - action: media_player.play_media
     target:
-      entity_id: '{{ player }}'
+      entity_id: '{{ target_player }}'
     data:
       media_content_id: '{{ playlist }}'
       media_content_type: music
   - action: media_player.shuffle_set
     target:
-      entity_id: '{{ player }}'
+      entity_id: '{{ target_player }}'
     data:
       shuffle: true
