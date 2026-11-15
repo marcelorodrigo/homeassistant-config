@@ -350,11 +350,15 @@ views:
 
   # ─────────────────────────────────────────────────────────────────────────────
   # Garage — TP-Link Tapo C310 (fixed, outdoor)
+  # C310 capability notes: 2K video, IR night vision, person/motion/tamper
+  # detection, two-way audio, microSD recording, automatic siren.
+  # No spotlight/floodlight, no pan/tilt, no privacy modes — those cards are
+  # intentionally absent because the hardware cannot provide them.
   # ─────────────────────────────────────────────────────────────────────────────
   - title: Garage
     path: garage
     type: sections
-    icon: mdi:garage
+    icon: mdi:garage-variant
     max_columns: 4
     sections:
       # Live stream
@@ -366,7 +370,7 @@ views:
             icon: mdi:cctv
 
           - type: picture-entity
-            entity: camera.outdoor_camera_hd_stream
+            entity: camera.garage_camera_hd_stream
             camera_view: live
             show_name: false
             show_state: false
@@ -383,37 +387,133 @@ views:
             icon: mdi:tune
 
           - type: tile
-            entity: select.outdoor_camera_person_detection
+            entity: select.garage_camera_person_detection
             name: Person Detection
             icon: mdi:account-search
             grid_options:
               columns: 6
 
           - type: tile
-            entity: select.outdoor_camera_motion_detection
+            entity: select.garage_camera_motion_detection
             name: Motion Detection
             icon: mdi:motion-sensor
             grid_options:
               columns: 6
 
           - type: tile
-            entity: number.outdoor_camera_motion_detection_digital_sensitivity
+            entity: number.garage_camera_motion_detection_digital_sensitivity
             name: Motion Sensitivity
             icon: mdi:gauge
             grid_options:
               columns: 6
 
           - type: tile
-            entity: select.outdoor_camera_tamper_detection
+            entity: select.garage_camera_tamper_detection
             name: Tamper Detection
             icon: mdi:shield-alert
             grid_options:
               columns: 6
 
           - type: tile
-            entity: select.outdoor_camera_automatic_alarm
+            entity: switch.garage_camera_notifications
+            name: Push Notifications
+            icon: mdi:bell-ring
+            grid_options:
+              columns: 6
+
+      # Alarm & Siren
+      - type: grid
+        title: Alarm & Siren
+        cards:
+          - type: heading
+            heading: Camera Siren
+            heading_style: subtitle
+            icon: mdi:bullhorn
+
+          - type: tile
+            entity: select.garage_camera_automatic_alarm
             name: Automatic Alarm
             icon: mdi:bell-alert
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: select.garage_camera_siren_type
+            name: Siren Sound
+            icon: mdi:music-note
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: number.garage_camera_siren_volume
+            name: Siren Volume
+            icon: mdi:volume-high
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: number.garage_camera_siren_duration
+            name: Siren Duration
+            icon: mdi:timer-outline
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.garage_camera_trigger_alarm_on_people_detection
+            name: Alarm on Person
+            icon: mdi:account-alert
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.garage_camera_trigger_alarm_on_motion_detection
+            name: Alarm on Motion
+            icon: mdi:motion-sensor-alert
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.garage_camera_trigger_alarm_on_tamper_detection
+            name: Alarm on Tamper
+            icon: mdi:shield-alert
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.garage_camera_trigger_alarm_on_intrusion_detection
+            name: Alarm on Intrusion
+            icon: mdi:home-alert
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: switch.garage_camera_trigger_alarm_on_linecrossing_detection
+            name: Alarm on Line Crossing
+            icon: mdi:ray-start-arrow
+            grid_options:
+              columns: 6
+
+          - type: button
+            entity: button.garage_camera_manual_alarm_start
+            name: Sound Siren
+            icon: mdi:bullhorn
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.garage_camera_manual_alarm_start
+            grid_options:
+              columns: 6
+
+          - type: button
+            entity: button.garage_camera_manual_alarm_stop
+            name: Stop Siren
+            icon: mdi:bullhorn-outline
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.garage_camera_manual_alarm_stop
             grid_options:
               columns: 6
 
@@ -427,104 +527,65 @@ views:
             icon: mdi:camera-metering-center
 
           - type: tile
-            entity: select.outdoor_camera_night_vision
+            entity: select.garage_camera_night_vision
             name: Night Vision
             icon: mdi:moon-waning-crescent
             grid_options:
               columns: 6
 
           - type: tile
-            entity: select.outdoor_camera_night_vision_switching
+            entity: select.garage_camera_night_vision_switching
             name: Auto Night Mode
             icon: mdi:brightness-auto
             grid_options:
               columns: 6
 
           - type: tile
-            entity: select.outdoor_camera_light_frequency
+            entity: select.garage_camera_light_frequency
             name: Light Frequency
             icon: mdi:flash
             grid_options:
               columns: 6
 
           - type: tile
-            entity: binary_sensor.outdoor_camera_noise
+            entity: switch.garage_camera_flip
+            name: Image Flip
+            icon: mdi:flip-vertical
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: binary_sensor.garage_camera_noise
             name: Sound Detection
             icon: mdi:volume-high
             grid_options:
               columns: 6
 
           - type: tile
-            entity: number.outdoor_camera_microphone_volume
+            entity: number.garage_camera_microphone_volume
             name: Mic Volume
             icon: mdi:microphone
             grid_options:
               columns: 6
 
           - type: tile
-            entity: number.outdoor_camera_speaker_volume
+            entity: number.garage_camera_speaker_volume
             name: Speaker Volume
             icon: mdi:volume-high
             grid_options:
               columns: 6
 
           - type: tile
-            entity: switch.outdoor_camera_microphone_mute
+            entity: switch.garage_camera_microphone_mute
             name: Mute Microphone
             icon: mdi:microphone-off
             grid_options:
               columns: 6
 
           - type: tile
-            entity: switch.outdoor_camera_microphone_noise_cancellation
+            entity: switch.garage_camera_microphone_noise_cancellation
             name: Noise Cancellation
             icon: mdi:noise-off
-            grid_options:
-              columns: 6
-
-      # Lighting & Privacy
-      - type: grid
-        title: Lighting & Privacy
-        cards:
-          - type: tile
-            entity: switch.outdoor_camera_privacy
-            name: Privacy Mode
-            icon: mdi:eye-off
-            grid_options:
-              columns: 6
-
-          - type: tile
-            entity: light.outdoor_camera_floodlight_timed
-            name: Floodlight
-            icon: mdi:spotlight-beam
-            grid_options:
-              columns: 6
-
-          - type: tile
-            entity: number.outdoor_camera_spotlight_intensity
-            name: Spotlight Intensity
-            icon: mdi:brightness-6
-            grid_options:
-              columns: 6
-
-          - type: tile
-            entity: select.outdoor_camera_spotlight_on_off_for
-            name: Spotlight Timer
-            icon: mdi:timer
-            grid_options:
-              columns: 6
-
-          - type: tile
-            entity: switch.outdoor_camera_privacy_zones
-            name: Privacy Zones
-            icon: mdi:zone
-            grid_options:
-              columns: 6
-
-          - type: tile
-            entity: switch.outdoor_camera_lens_distortion_correction
-            name: Distortion Correction
-            icon: mdi:lens
             grid_options:
               columns: 6
 
@@ -533,30 +594,44 @@ views:
         title: Recording & Storage
         cards:
           - type: tile
-            entity: switch.outdoor_camera_record_to_sd_card
+            entity: switch.garage_camera_record_to_sd_card
             name: Record to SD Card
             icon: mdi:database
             grid_options:
               columns: 6
 
           - type: tile
-            entity: switch.outdoor_camera_record_audio
+            entity: switch.garage_camera_record_audio
             name: Record Audio
             icon: mdi:microphone-check
             grid_options:
               columns: 6
 
           - type: tile
-            entity: sensor.outdoor_camera_recordings_synchronization
+            entity: sensor.garage_camera_recordings_synchronization
             name: Cloud Sync Status
             icon: mdi:cloud-sync
             grid_options:
               columns: 6
 
           - type: tile
-            entity: switch.outdoor_camera_media_sync
+            entity: switch.garage_camera_media_sync
             name: Media Sync
             icon: mdi:sync
+            grid_options:
+              columns: 6
+
+          - type: button
+            entity: button.garage_camera_format_sd_card
+            name: Format SD Card
+            icon: mdi:sd
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.garage_camera_format_sd_card
+              confirmation:
+                text: Erase all recordings on the camera's SD card?
             grid_options:
               columns: 6
 
@@ -564,58 +639,96 @@ views:
       - type: grid
         title: Network & System
         cards:
+          - type: heading
+            heading: Camera System
+            heading_style: subtitle
+            icon: mdi:cog
+
           - type: tile
-            entity: sensor.outdoor_camera_rssi
+            entity: sensor.garage_camera_rssi
             name: Signal Strength
             icon: mdi:wifi
             grid_options:
               columns: 6
 
           - type: tile
-            entity: sensor.outdoor_camera_network_ssid
+            entity: sensor.garage_camera_network_ssid
             name: WiFi Network
             icon: mdi:network-wifi
             grid_options:
               columns: 6
 
           - type: tile
-            entity: sensor.outdoor_camera_link_type
+            entity: sensor.garage_camera_link_type
             name: Link Type
             icon: mdi:ethernet
             grid_options:
               columns: 6
 
           - type: tile
-            entity: sensor.outdoor_camera_last_automatic_reboot_time
+            entity: sensor.garage_camera_last_automatic_reboot_time
             name: Last Reboot
             icon: mdi:restart
             grid_options:
               columns: 6
 
           - type: tile
-            entity: switch.outdoor_camera_automatic_reboot
+            entity: switch.garage_camera_automatic_reboot
             name: Auto Reboot
             icon: mdi:power-cycle
             grid_options:
               columns: 6
 
           - type: tile
-            entity: select.outdoor_camera_automatic_reboot_time
+            entity: select.garage_camera_automatic_reboot_time
             name: Reboot Schedule
             icon: mdi:clock
             grid_options:
               columns: 6
 
           - type: tile
-            entity: switch.outdoor_camera_automatically_upgrade_firmware
+            entity: switch.garage_camera_automatically_upgrade_firmware
             name: Auto Upgrade
             icon: mdi:auto-upload
             grid_options:
               columns: 6
 
           - type: tile
-            entity: switch.outdoor_camera_indicator_led
+            entity: switch.garage_camera_indicator_led
             name: Indicator LED
             icon: mdi:led-on
+            grid_options:
+              columns: 6
+
+          - type: tile
+            entity: update.garage_camera_update
+            name: Firmware Update
+            icon: mdi:package-up
+            grid_options:
+              columns: 6
+
+          - type: button
+            entity: button.garage_camera_sync_time
+            name: Sync Time
+            icon: mdi:clock-check
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.garage_camera_sync_time
+            grid_options:
+              columns: 6
+
+          - type: button
+            entity: button.garage_camera_reboot
+            name: Reboot Camera
+            icon: mdi:restart-alert
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.garage_camera_reboot
+              confirmation:
+                text: Reboot the outdoor camera now?
             grid_options:
               columns: 6

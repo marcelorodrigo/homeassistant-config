@@ -2,6 +2,19 @@
 
 This repository stores the YAML-managed configuration for the Home Assistant instance at home.
 
+## UI-managed integrations (not in this repo)
+
+Some integrations have no YAML configuration and live only in Home Assistant's storage (`.storage/`). They are lost on a from-scratch restore and must be re-added by hand:
+
+| Integration | Entry | Device | Notes |
+|---|---|---|---|
+| `tapo_control` (HACS) | `192.168.68.63` | Living Room Camera (Tapo C210) | Local camera control, entities `living_room_camera_*` |
+| `tapo_control` (HACS) | `192.168.68.202` | Garage Camera (Tapo C310) | Local camera control, entities `garage_camera_*`. Address is static **inside the Tapo app only** — add a matching DHCP reservation on the router so nothing else is handed `.202` |
+
+Both cameras are controlled locally through the TP-Link Tapo integration, not through the cloud. The Tapo cloud password is stored in the config entry and never in this repository.
+
+YAML dashboards (`lovelace` `mode: yaml`) are read at startup, so a dashboard change deployed via the webhook only becomes visible after a Home Assistant restart.
+
 ## Deployment
 
 Home Assistant pulls changes from GitHub after a push webhook calls the local webhook automation.
