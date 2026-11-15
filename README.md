@@ -13,6 +13,8 @@ Some integrations have no YAML configuration and live only in Home Assistant's s
 
 Both cameras are controlled locally through the TP-Link Tapo integration, not through the cloud. The Tapo cloud password is stored in the config entry and never in this repository.
 
+`tapo_control` builds each entity's `unique_id` from the camera MAC plus the **alias set in the Tapo app**. Renaming a camera in the Tapo app therefore makes Home Assistant create a whole new entity set and leaves the previous one orphaned — those orphans still appear in the UI as `unavailable`, and they keep occupying the old entity IDs, so renames appear to "revert" after a restart. After renaming a camera in the Tapo app: delete the orphaned duplicates in Settings → Devices & Services → Entities, then re-apply the `living_room_camera_*` / `garage_camera_*` renames and reload the config entry.
+
 YAML dashboards (`lovelace` `mode: yaml`) are read at startup, so a dashboard change deployed via the webhook only becomes visible after a Home Assistant restart.
 
 ## Deployment
