@@ -1,16 +1,17 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "home-assistant": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "ha-mcp@latest"
-      ],
-      "enabled": true,
-      "environment": {
-        "HOMEASSISTANT_URL": "https://casa.wiebbelling.com",
-        "HOMEASSISTANT_TOKEN": "{env:HOMEASSISTANT_OPENCODE}"
+    "servers": {
+      "home-assistant": {
+        "type": "local",
+        "command": [
+          "uvx",
+          "ha-mcp@latest"
+        ],
+        "environment": {
+          "HOMEASSISTANT_URL": "https://casa.wiebbelling.com",
+          "HOMEASSISTANT_TOKEN": "{env:HOMEASSISTANT_OPENCODE}"
+        }
       }
     }
   }

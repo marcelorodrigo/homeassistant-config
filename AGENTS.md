@@ -45,7 +45,7 @@ This repository is the **source of truth** for all Home Assistant configuration.
 
 ## Agent tools
 
-- `opencode.json` configures `ha-mcp` (via `uvx ha-mcp@latest`) — use the `ha_*` Home Assistant toolset
+- `opencode.json` configures `ha-mcp` (via `uvx ha-mcp@latest`) as `mcp.servers.home-assistant` in native OpenCode V2 shape — use the `ha_*` Home Assistant toolset
 - Locked skill: `home-assistant-best-practices` — load via `skill` tool before creating/modifying automations, scenes, scripts, or helpers
 
 ## Entity name conventions
