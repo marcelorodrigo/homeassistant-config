@@ -10,8 +10,8 @@ This is a **YAML-managed Home Assistant configuration** deployed via GitHub push
 | `automations.yaml` | All YAML automations |
 | `scripts.yaml` | Single `notify_all_users_at_home` script |
 | `scenes.yaml` | Empty — scenes managed via UI only |
-| `input_numbers.yaml` | washing/dryer machine durations |
-| `input_texts.yaml` | dryer device-to-notify |
+| `input_numbers.yaml` | laundry durations + entryway light linger |
+| `input_texts.yaml` | laundry device-to-notify + living-room remote helper |
 | `dashboards/camera.yaml` | Cameras dashboard — Living Room and Garage views |
 | `dashboards/main.yaml` | Main dashboard — Home, Energy, Lamps and Internet views |
 
@@ -30,6 +30,8 @@ Most helpers (timers, input_booleans, input_selects, etc.) are **UI-created** (s
 ## Infrastructure as Code
 
 This repository is the **source of truth** for all Home Assistant configuration. Every infrastructure change — automations, scripts, helpers, dashboards, integrations, device/entity settings — must be **recorded as files in this repo** for persistence and version control. UI-only changes (`.storage/`) are ephemeral and lost on restore. Prefer YAML files for what HA supports; for UI-created helpers (timers, input_booleans, etc.), the agent must accept that they live in storage but should never create new ones via the UI unless a YAML alternative is impractical.
+
+`input_number` and `input_text` helpers are fully YAML-managed here (`input_numbers.yaml`, `input_texts.yaml`). Never create, rename, or delete them in the UI: a storage copy is either ignored with a `does not generate unique IDs` startup error (input_text) or shadows the YAML entity, pushing it to a `_2` entity_id (input_number). Add or change them only in YAML.
 
 ## Deployment
 

@@ -1,3 +1,7 @@
+# Source of truth for these numeric helpers.
+# Do not recreate them in the UI: a UI copy shadows the YAML entity
+# and pushes it to a suffixed (_2) entity_id.
+
 washing_machine_duration_minutes:
   name: "Washing Machine Duration"
   initial: 135
