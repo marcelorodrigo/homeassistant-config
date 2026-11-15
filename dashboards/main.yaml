@@ -1,3 +1,5 @@
+# Main — household dashboard: Home, Energy, Lamps and Internet.
+# Registered in configuration.yaml as lovelace.dashboards.dashboard-main.
 views:
   # ─────────────────────────────────────────────────────────────────────────────
   # Home — kitchen, living room, laundry, weather, garage

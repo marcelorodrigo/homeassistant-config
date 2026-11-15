@@ -12,7 +12,10 @@ This is a **YAML-managed Home Assistant configuration** deployed via GitHub push
 | `scenes.yaml` | Empty — scenes managed via UI only |
 | `input_numbers.yaml` | washing/dryer machine durations |
 | `input_texts.yaml` | dryer device-to-notify |
-| `dashboards/camera.yaml` | One YAML dashboard (registered in `configuration.yaml`) |
+| `dashboards/camera.yaml` | Cameras dashboard — Living Room and Garage views |
+| `dashboards/main.yaml` | Main dashboard — Home, Energy, Lamps and Internet views |
+
+Both dashboards are YAML mode, registered under `lovelace.dashboards` in `configuration.yaml`. HA's built-in **Home Dashboard** at `/home/overview` (titled "Overview") is storage-managed and outside this repo — do not confuse it with `dashboard-main`, which shares some of its content but is the version-controlled one.
 
 Most helpers (timers, input_booleans, input_selects, etc.) are **UI-created** (storage), not in YAML — do not guess that they live in files.
 
