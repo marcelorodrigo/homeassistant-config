@@ -25,3 +25,41 @@ notify_all_users_at_home:
           title: '{{ title }}'
           data: '{{ data | default({}) }}'
         action: notify.mobile_app_android_{{ repeat.item | replace('.', '_') }}
+
+play_playlist:
+  alias: Play a Music Assistant playlist on the main speakers
+  description: Plays a Music Assistant playlist, lowering the volume to at most 40% first, then enables shuffle.
+  fields:
+    playlist:
+      description: Music Assistant playlist URI
+      example: library://playlist/115
+    player:
+      description: Target Music Assistant player (defaults to media_player.all_speakers)
+  mode: queued
+  sequence:
+  # fields.player.default is UI metadata only — resolve the fallback at runtime.
+  - variables:
+      target_player: "{{ player | default('media_player.all_speakers', true) }}"
+      max_volume: 0.4
+  # Cap only: lower a loud setting, never raise one. Unknown volume is left alone,
+  # and a failed volume change aborts instead of playing at an unknown level.
+  - if:
+      - condition: template
+        value_template: "{{ state_attr(target_player, 'volume_level') | float(max_volume) > max_volume }}"
+    then:
+      - action: media_player.volume_set
+        target:
+          entity_id: '{{ target_player }}'
+        data:
+          volume_level: '{{ max_volume }}'
+  - action: media_player.play_media
+    target:
+      entity_id: '{{ target_player }}'
+    data:
+      media_content_id: '{{ playlist }}'
+      media_content_type: music
+  - action: media_player.shuffle_set
+    target:
+      entity_id: '{{ target_player }}'
+    data:
+      shuffle: true
