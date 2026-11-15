@@ -260,17 +260,17 @@ views:
         title: Today
         cards:
           - type: energy-date-selection
-            collection_key: overview-energy
+            collection_key: energy_overview
 
           - type: energy-distribution
-            collection_key: overview-energy
+            collection_key: energy_overview
             link_dashboard: true
 
           - type: energy-self-sufficiency-gauge
-            collection_key: overview-energy
+            collection_key: energy_overview
 
           - type: energy-sources-table
-            collection_key: overview-energy
+            collection_key: energy_overview
 
   # ─────────────────────────────────────────────────────────────────────────────
   # Lamps
