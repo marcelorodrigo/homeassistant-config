@@ -14,6 +14,12 @@ lovelace:
       title: Cameras
       icon: mdi:cctv
       show_in_sidebar: true
+    dashboard-overview:
+      mode: yaml
+      filename: dashboards/overview.yaml
+      title: Overview
+      icon: mdi:home
+      show_in_sidebar: true
 
 automation: !include automations.yaml
 script: !include scripts.yaml
