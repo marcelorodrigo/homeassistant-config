@@ -487,37 +487,34 @@
           - notify.android_julia
           - notify.android_marcelo
       off_press_action:
+      - action: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.living_room_lights
+      off_double_press_action:
       - action: media_player.play_media
         target:
           entity_id: media_player.all_speakers
         data:
-          media_content_id: library://playlist/29
+          media_content_id: library://playlist/115
           media_content_type: music
         metadata:
-          title: This Is Michael Jackson
-          thumbnail: https://thisis-images.spotifycdn.com/37i9dQZF1DZ06evO1SVXaM-default.jpg
+          title: Coffee is ready
+          thumbnail: https://mosaic.scdn.co/640/ab67616d00001e022fefe7a9143a3089f786a861ab67616d00001e02a20f207a64ce7139907b8247ab67616d00001e02aedbd4cfb18eaf688ae3d288ab67616d00001e02e6c0c82dce5500529fe943a3
           media_class: playlist
           children_media_class:
           navigateIds:
           - {}
           - media_content_type: music_assistant
             media_content_id: playlists
-      off_hold_action:
-      - action: media_player.play_media
+      - action: media_player.shuffle_set
         target:
           entity_id: media_player.all_speakers
         data:
-          media_content_id: library://playlist/17
-          media_content_type: music
-        metadata:
-          title: Suzan & Freek Mix
-          thumbnail: https://seed-mix-image.spotifycdn.com/v6/img/artist/77IW5ZK1smDQYYKDCQugXh/fr/default
-          media_class: playlist
-          children_media_class:
-          navigateIds:
-          - {}
-          - media_content_type: music_assistant
-            media_content_id: playlists
+          shuffle: true
+      off_double_press_exposed: true
+      helper_double_press_delay: 250
 - id: '1765291805799'
   alias: Julia Remote Automation
   description: ''
