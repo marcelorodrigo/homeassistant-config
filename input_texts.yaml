@@ -1,3 +1,7 @@
+# Source of truth for these text helpers.
+# Do not recreate them in the UI: storage copies collide with these
+# definitions (ignored at startup or shadowing the YAML entity).
+
 washing_machine_device_to_notify:
   name: "Washing Machine device to notify"
   icon: "mdi:cellphone-cog"
@@ -5,3 +9,8 @@ washing_machine_device_to_notify:
 dryer_machine_device_to_notify:
   name: "Dryer Machine device to notify"
   icon: "mdi:cellphone-cog"
+
+living_room_remote_last_controller_event:
+  name: "Living Room Remote Last Controller Event"
+  icon: "mdi:remote"
+  max: 100
